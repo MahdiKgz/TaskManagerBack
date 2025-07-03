@@ -1,0 +1,7 @@
+{
+	"dependencies": {
+		"express": "^5.1.0",
+		"fastest-validator": "^1.19.1",
+		"mongoose": "^8.16.1"
+	}
+}
