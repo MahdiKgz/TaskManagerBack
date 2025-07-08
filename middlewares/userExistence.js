@@ -4,7 +4,7 @@ const userExists = async (req, res, next) => {
   const { email } = req.body;
   const existingUser = await UserModel.findOne({ email });
 
-  if (existingUser) {
+  if (existingUser && req.url === "/register/") {
     return res.status(409).json({ message: "User already Exists" });
   }
 

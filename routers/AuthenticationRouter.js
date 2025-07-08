@@ -6,7 +6,7 @@ const userExists = require("../middlewares/userExistence");
 
 AuthRouter.use(userExists);
 
-// AuthRouter.route("/login").post(AuthController.Login);
+AuthRouter.route("/login").post(AuthController.Login);
 
 AuthRouter.route("/register").post(AuthController.Register);
 
