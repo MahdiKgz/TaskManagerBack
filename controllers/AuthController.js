@@ -1,4 +1,5 @@
 const UserModel = require("../models/UserModel");
+const { generateToken } = require("../utils/shared");
 const registerValidator = require("./../validators/RegisterValidator");
 const bcrypt = require("bcryptjs");
 
@@ -9,7 +10,7 @@ exports.Register = async (req, res) => {
     return res.status(422).json({ message: "Check All the fileds!" });
   }
   let { name, username, email, password } = req.body;
-  // has password
+  // hash password
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const insertNewUser = await UserModel.create({
@@ -19,6 +20,7 @@ exports.Register = async (req, res) => {
     password: hashedPassword,
     role: "USER",
   });
+  const token = generateToken(insertNewUser.toObject());
 
-  res.status(201).json(insertNewUser);
+  res.status(201).json({ token });
 };
