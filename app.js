@@ -6,14 +6,13 @@ require("./config/db");
 
 const app = express();
 
-//Routers
-const AuthRouter = require("./routers/AuthenticationRouter");
-
 // fire middlewares
 app.use(express.json());
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms")
 );
+//Routers
+const AuthRouter = require("./routers/AuthenticationRouter");
 
 app.use("/api/auth", AuthRouter);
 
