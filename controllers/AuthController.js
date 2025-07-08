@@ -9,6 +9,12 @@ exports.Register = async (req, res) => {
   }
   let { name, username, email, password } = req.body;
 
+  //check user existence
+  const checkUserExists = await UserModel.findOne({ email });
+  if (checkUserExists?.email) {
+    return res.status(409).json({ message: "User already exists!" });
+  }
+
   const insertNewUser = await UserModel.create({
     name,
     username,
