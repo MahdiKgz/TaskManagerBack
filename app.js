@@ -21,6 +21,6 @@ const TaskRouter = require("./routers/TasksRouter");
 app.use("/api/auth", AuthRouter);
 app.use("/api/tasks", TaskRouter);
 
-app.listen(process.env.APP_LISTEN_PORT, () =>
-  console.log(`Server listening to ${process.env.APP_LISTEN_PORT}`)
+app.listen(process.env.PORT, () =>
+  console.log(`Server listening to ${process.env.PORT}`)
 );
