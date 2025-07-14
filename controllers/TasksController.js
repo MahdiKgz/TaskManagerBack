@@ -3,51 +3,59 @@ const TaskModel = require("../models/TasksModel");
 const TaskValidator = require("../validators/TaskValidator");
 
 exports.createTask = async (req, res) => {
-  const newTaksValidation = TaskValidator(req.body);
+  const newTaskValidation = TaskValidator(req.body);
 
-  const { title, description, status } = req.body;
+  const { title, description, status, user } = req.body; // Include user if needed
 
-  if (newTaksValidation === true) {
+  if (newTaskValidation === true) {
     try {
       const newTask = await TaskModel.create({
         title,
         description,
         status,
+        user, // Associate the task with a user if applicable
       });
 
       res.status(201).json(newTask);
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error !!" });
+      console.error(err); // Log the error for debugging
+      res.status(500).json({ message: "Internal Server Error!" });
     }
   } else {
     return res
-      .status(429)
-      .json({ message: "Something wrong in Task Validation" });
+      .status(400)
+      .json({ message: "Task validation failed", errors: newTaskValidation });
   }
 };
 
 exports.getAllTasks = async (req, res) => {
-  const listOfTasks = await TaskModel.find(
-    {},
-    "-__v -createdAt -updatedAt"
-  ).lean();
-  return res.status(200).json(listOfTasks);
+  try {
+    const listOfTasks = await TaskModel.find(
+      {},
+      "-__v -createdAt -updatedAt"
+    ).lean();
+    return res.status(200).json(listOfTasks);
+  } catch (err) {
+    console.error(err); // Log the error for debugging
+    return res.status(500).json({ message: "Internal Server Error!" });
+  }
 };
 
 exports.getOneTask = async (req, res) => {
   const { id } = req.params;
   if (isValidObjectId(id)) {
     try {
-      const task = await TaskModel.findOne(
-        { _id: id },
-        "-__v -createdAt -updatedAt"
-      );
-      res.json(task);
+      const task = await TaskModel.findById(id, "-__v -createdAt -updatedAt");
+      if (!task) {
+        return res.status(404).json({ message: "Task not found!" });
+      }
+      res.status(200).json(task);
     } catch (err) {
-      res.status(500).json({ messge: "Internal Server Error !" });
+      console.error(err); // Log the error for debugging
+      res.status(500).json({ message: "Internal Server Error!" });
     }
   } else {
-    return res.status(404).json({ message: "Task Not found!" });
+    return res.status(400).json({ message: "Invalid task ID!" });
   }
 };
 
@@ -55,12 +63,16 @@ exports.deleteTask = async (req, res) => {
   const { id } = req.params;
   if (isValidObjectId(id)) {
     try {
-      await TaskModel.findOneAndDelete({ _id: id });
-      res.json({ message: "Task Deleted !" });
+      const deletedTask = await TaskModel.findByIdAndDelete(id);
+      if (!deletedTask) {
+        return res.status(404).json({ message: "Task not found!" });
+      }
+      res.status(200).json({ message: "Task deleted!" });
     } catch (err) {
-      res.status(500).json({ messge: "Internal Server Error !" });
+      console.error(err); // Log the error for debugging
+      res.status(500).json({ message: "Internal Server Error!" });
     }
   } else {
-    return res.status(404).json({ message: "Task Not found!" });
+    return res.status(400).json({ message: "Invalid task ID!" });
   }
 };
