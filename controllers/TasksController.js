@@ -61,7 +61,6 @@ exports.getOneTask = async (req, res) => {
 
 exports.deleteTask = async (req, res) => {
   const { id } = req.params;
-  console.log(req.user);
   if (isValidObjectId(id)) {
     try {
       const deletedTask = await TaskModel.findByIdAndDelete(id);
