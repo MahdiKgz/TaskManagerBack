@@ -12,23 +12,23 @@ const UserSchema = mongoose.Schema(
       type: String,
       minLength: 3,
       required: true,
-      unique: true, // Ensure usernames are unique
+      unique: true,
     },
     email: {
       type: String,
       required: true,
-      unique: true, // Ensure emails are unique
-      match: /.+\@.+\..+/, // Basic email format validation
+      unique: true,
+      match: /.+\@.+\..+/,
     },
     password: {
       type: String,
       required: true,
-      minlength: 6, // Consider a minimum length for passwords
+      minlength: 6,
     },
     role: {
       type: String,
       required: true,
-      enum: ["user", "admin"], // Define roles if applicable
+      enum: ["USER", "ADMIN"],
     },
   },
   { timestamps: true }
