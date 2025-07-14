@@ -1,6 +1,7 @@
 const TaskController = require("../controllers/TasksController");
 
 const express = require("express");
+const checkUserToken = require("../middlewares/DeleteTaskByUser");
 const taskRouter = express.Router();
 
 taskRouter
@@ -11,6 +12,6 @@ taskRouter
 taskRouter
   .route("/:id")
   .get(TaskController.getOneTask)
-  .delete(TaskController.deleteTask);
+  .delete(checkUserToken, TaskController.deleteTask);
 
 module.exports = taskRouter;
