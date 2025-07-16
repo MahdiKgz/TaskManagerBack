@@ -10,18 +10,18 @@ exports.getUserOverView = async (req, res) => {
     const overViewResponse = [
       {
         type: "completed",
-        value: calculatePercent(tasksList, "completed"),
+        value: calculatePercent(tasksList, "completed") || 0,
       },
       {
         type: "todo",
-        value: calculatePercent(tasksList, "todo"),
+        value: calculatePercent(tasksList, "todo") || 0,
       },
       {
         type: "in-progress",
-        value: calculatePercent(tasksList, "in-progress"),
+        value: calculatePercent(tasksList, "in-progress") || 0,
       },
     ];
-    
+
     res.json(overViewResponse);
   } else {
     return res.status(404).json({ message: "User Not Found !" });
