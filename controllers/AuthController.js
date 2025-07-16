@@ -46,7 +46,7 @@ exports.Login = async (req, res) => {
   if (!isMatch) {
     return res
       .status(403)
-      .json({ messge: "نام کاربری یا رمز عبور اشتباه است ! " });
+      .json({ message: "نام کاربری یا رمز عبور اشتباه است ! " });
   }
   const token = generateToken(user.toObject());
   return res.status(200).json({ ...user.toObject(), token });
