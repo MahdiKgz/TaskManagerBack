@@ -8,8 +8,7 @@ exports.Register = async (req, res) => {
   const validationResult = registerValidator(req.body);
 
   if (validationResult !== true) {
-    console.log(validationResult);
-    return res.status(422).json({ message: "Check All the fileds!" });
+    return res.status(422).json({ message: "همه مقادیر را با دقت پر کنید !" });
   }
   let { name, username, email, password } = req.body;
   // hash password
@@ -30,12 +29,15 @@ exports.Register = async (req, res) => {
 exports.Login = async (req, res) => {
   const LoginValidation = LoginValidator(req.body);
   if (LoginValidation !== true) {
-    return res.status(429).json({ messge: "Check all the fields!" });
+    return res.status(429).json({ message: "همه مقادیر را با دقت پر کنید !" });
   }
 
   const { username, password } = req.body;
 
-  const user = await UserModel.findOne({ username } , "-__v ");
+  const user = await UserModel.findOne(
+    { username },
+    "-__v -createdAt -updatedAt -password "
+  );
 
   if (!user) {
     return res.status(404).json({ message: "User Not found!" });

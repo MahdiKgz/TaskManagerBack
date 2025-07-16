@@ -18,7 +18,6 @@ exports.createTask = async (req, res) => {
 
       res.status(201).json(newTask);
     } catch (err) {
-      console.error(err); // Log the error for debugging
       res.status(500).json({ message: "Internal Server Error!" });
     }
   } else {
@@ -36,7 +35,6 @@ exports.getAllTasks = async (req, res) => {
     ).lean();
     return res.status(200).json(listOfTasks);
   } catch (err) {
-    console.error(err); // Log the error for debugging
     return res.status(500).json({ message: "Internal Server Error!" });
   }
 };
@@ -51,7 +49,6 @@ exports.getOneTask = async (req, res) => {
       }
       res.status(200).json(task);
     } catch (err) {
-      console.error(err); // Log the error for debugging
       res.status(500).json({ message: "Internal Server Error!" });
     }
   } else {
@@ -69,7 +66,6 @@ exports.deleteTask = async (req, res) => {
       }
       res.status(200).json({ message: "Task deleted!" });
     } catch (err) {
-      console.error(err); // Log the error for debugging
       res.status(500).json({ message: "Internal Server Error!" });
     }
   } else {
