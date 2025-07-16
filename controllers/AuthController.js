@@ -36,7 +36,7 @@ exports.Login = async (req, res) => {
 
   const user = await UserModel.findOne(
     { username },
-    "-__v -createdAt -updatedAt -password "
+    "-__v -createdAt -updatedAt "
   );
 
   if (!user) {
