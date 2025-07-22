@@ -1,7 +1,7 @@
 const TaskController = require("../controllers/TasksController");
 
 const express = require("express");
-const checkUserToken = require("../middlewares/DeleteTaskByUser");
+const checkUserToken = require("../middlewares/CheckUserToken");
 const taskRouter = express.Router();
 
 taskRouter

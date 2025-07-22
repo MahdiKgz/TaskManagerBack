@@ -18,10 +18,12 @@ app.use(cors());
 const AuthRouter = require("./routers/AuthenticationRouter");
 const TaskRouter = require("./routers/TasksRouter");
 const overViewRouter = require("./routers/OverviewRouter");
+const ProfileRouter = require("./routers/ProfileRouter");
 
 app.use("/api/auth", AuthRouter);
 app.use("/api/tasks", TaskRouter);
 app.use("/api/overview", overViewRouter);
+app.use("/api/profile", ProfileRouter);
 
 app.listen(process.env.PORT, () =>
   console.log(`Server listening to ${process.env.PORT}`)
