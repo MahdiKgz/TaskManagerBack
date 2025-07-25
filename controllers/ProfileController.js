@@ -16,10 +16,10 @@ exports.editPassword = async (req, res) => {
     return res.status(404).json({ message: "کاربری با این شناسه پیدا نشد!" });
   }
 
-  const { currentPassword, newPassword, confirmNewPassword } = req.body;
+  const { password, newPassword, confirmNewPassword } = req.body;
 
   // Compare the current password with the stored password
-  const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+  const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) {
     return res
       .status(404)
