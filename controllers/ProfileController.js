@@ -62,7 +62,12 @@ exports.editInfo = async (req, res) => {
 
   const { name, username, email } = req.body;
 
-  // Update the user's password with the new hashed password
+  for (const property in req.body) {
+    if (req.body[property] === "") {
+      return res.status(422).json({ message: "مقدار خالی مجاز نیست!" });
+    }
+  }
+
   await UserModel.findByIdAndUpdate(id, {
     $set: {
       name,
