@@ -21,7 +21,9 @@ exports.Register = async (req, res) => {
     password: hashedPassword,
     role: "USER",
   });
-  const token = generateToken(insertNewUser.toObject());
+
+  const { role, _id } = insertNewUser.toObject();
+  const token = generateToken({ role, _id });
 
   res.status(201).json({ ...insertNewUser.toObject(), token });
 };
@@ -48,6 +50,7 @@ exports.Login = async (req, res) => {
       .status(403)
       .json({ message: "نام کاربری یا رمز عبور اشتباه است ! " });
   }
-  const token = generateToken(user.toObject());
+  const { role, _id } = user.toObject();
+  const token = generateToken({ role, _id });
   return res.status(200).json({ ...user.toObject(), token });
 };
