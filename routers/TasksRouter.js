@@ -4,14 +4,11 @@ const express = require("express");
 const checkUserToken = require("../middlewares/CheckUserToken");
 const taskRouter = express.Router();
 
-taskRouter
-  .route("/")
-  .get(TaskController.getAllTasks)
-  .post(TaskController.createTask);
+taskRouter.route("/").post(TaskController.createTask); // for admin user access
 
-taskRouter
-  .route("/:id")
-  .get(TaskController.getOneTask)
-  .delete(checkUserToken, TaskController.deleteTask);
+taskRouter.route("/:id").delete(checkUserToken, TaskController.deleteTask); // for admin user access
 
+taskRouter.route("/:userID/").get(TaskController.getUserTasks);
+
+taskRouter.route("/:userID/:id").get(TaskController.getOneUserTask);
 module.exports = taskRouter;

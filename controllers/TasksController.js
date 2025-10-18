@@ -27,35 +27,6 @@ exports.createTask = async (req, res) => {
   }
 };
 
-exports.getAllTasks = async (req, res) => {
-  try {
-    const listOfTasks = await TaskModel.find(
-      {},
-      "-__v -createdAt -updatedAt"
-    ).lean();
-    return res.status(200).json(listOfTasks);
-  } catch (err) {
-    return res.status(500).json({ message: "Internal Server Error!" });
-  }
-};
-
-exports.getOneTask = async (req, res) => {
-  const { id } = req.params;
-  if (isValidObjectId(id)) {
-    try {
-      const task = await TaskModel.findById(id, "-__v -createdAt -updatedAt");
-      if (!task) {
-        return res.status(404).json({ message: "Task not found!" });
-      }
-      res.status(200).json(task);
-    } catch (err) {
-      res.status(500).json({ message: "Internal Server Error!" });
-    }
-  } else {
-    return res.status(400).json({ message: "Invalid task ID!" });
-  }
-};
-
 exports.deleteTask = async (req, res) => {
   const { id } = req.params;
   if (isValidObjectId(id)) {
@@ -70,5 +41,35 @@ exports.deleteTask = async (req, res) => {
     }
   } else {
     return res.status(400).json({ message: "Invalid task ID!" });
+  }
+};
+
+exports.getUserTasks = async (req, res) => {
+  const { userID } = req.params;
+  try {
+    if (isValidObjectId(userID)) {
+      const tasksByUserID = await TaskModel.find({ user: userID });
+      return res.status(200).json(tasksByUserID);
+    } else {
+      return res
+        .status(403)
+        .json({ message: "invalid user ID. access denied" });
+    }
+  } catch (err) {
+    return res.json({ message: "Internal server error !" });
+  }
+};
+
+exports.getOneUserTask = async (req, res) => {
+  const { userID, id } = req.params;
+  try {
+    if (isValidObjectId(userID) && isValidObjectId(id)) {
+      const singleTaskById = await TaskModel.findOne({ user: userID, _id: id });
+      return res.status(200).json(singleTaskById);
+    } else {
+      return res.status(404).json({ message: "invalid userID or taks ID." });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Internal server error!" });
   }
 };
