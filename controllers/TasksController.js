@@ -73,3 +73,25 @@ exports.getOneUserTask = async (req, res) => {
     return res.status(500).json({ message: "Internal server error!" });
   }
 };
+
+exports.updateTask = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, status } = req.body;
+  try {
+    if (isValidObjectId(id)) {
+      const updatedTask = await TaskModel.findByIdAndUpdate(
+        id,
+        { title, description, status },
+        { new: true },
+      );
+      if (!updatedTask) {
+        return res.status(404).json({ message: "Task not found!" });
+      }
+      return res.status(200).json({ message: "Task updated!" });
+    } else {
+      return res.status(400).json({ message: "Invalid task ID!" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};

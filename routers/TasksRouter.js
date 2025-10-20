@@ -6,7 +6,10 @@ const taskRouter = express.Router();
 
 taskRouter.route("/").post(TaskController.createTask); // for admin user access
 
-taskRouter.route("/:id").delete(checkUserToken, TaskController.deleteTask); // for admin user access
+taskRouter
+  .route("/:id")
+  .delete(checkUserToken, TaskController.deleteTask) // for admin user access
+  .patch(TaskController.updateTask);
 
 taskRouter.route("/:userID/").get(TaskController.getUserTasks);
 
