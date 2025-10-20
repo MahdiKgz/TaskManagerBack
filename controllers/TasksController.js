@@ -67,7 +67,7 @@ exports.getOneUserTask = async (req, res) => {
       const singleTaskById = await TaskModel.findOne({ user: userID, _id: id });
       return res.status(200).json(singleTaskById);
     } else {
-      return res.status(404).json({ message: "invalid userID or taks ID." });
+      return res.status(404).json({ message: "invalid userID or task ID" });
     }
   } catch (err) {
     return res.status(500).json({ message: "Internal server error!" });
